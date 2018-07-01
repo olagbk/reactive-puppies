@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject, fromEvent } from 'rxjs';
-import { debounceTime,  withLatestFrom } from 'rxjs/internal/operators';
+import { debounceTime, tap, withLatestFrom } from 'rxjs/internal/operators';
 
 @Component({
   selector: 'app-root',
@@ -11,14 +11,16 @@ export class AppComponent implements OnInit {
   dogX: number;
   dogY: number;
   src$ = new BehaviorSubject(0);
+  showDog = false;
 
   ngOnInit() {
 
     const mousemove$ =
       fromEvent(document, 'mousemove').pipe(
-      debounceTime(15),
-      withLatestFrom(this.src$));
-
+        debounceTime(15),
+        tap(() => this.showDog = true),
+        withLatestFrom(this.src$)
+      );
 
     mousemove$.subscribe(([event, source]) => {
       const mouseEvent = event as MouseEvent;
