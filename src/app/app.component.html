@@ -1,7 +1,7 @@
 <img
-  [hidden]="!showDog"
+  [hidden]="!( dogX$ && dogY$ | async )"
   [src]="'../assets/' + (src$ | async) + '.svg'"
-  [ngStyle]="{'left': dogX + 'px', 'top': dogY + 'px'}">
+  [ngStyle]="{'left': (dogX$ | async ) + 'px', 'top': (dogY$ | async ) + 'px'}">
 
 <span>
   <a href="https://www.vexels.com/vectors/preview/71538/dog-motion-sequence-silhouettes">

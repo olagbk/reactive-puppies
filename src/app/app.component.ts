@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject, fromEvent } from 'rxjs';
-import { debounceTime, tap, withLatestFrom } from 'rxjs/internal/operators';
+import { debounceTime, first,  withLatestFrom } from 'rxjs/internal/operators';
 
 @Component({
   selector: 'app-root',
@@ -8,24 +8,36 @@ import { debounceTime, tap, withLatestFrom } from 'rxjs/internal/operators';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  dogX: number;
-  dogY: number;
-  src$ = new BehaviorSubject(0);
-  showDog = false;
+  src$: BehaviorSubject<number>;
+  dogX$: BehaviorSubject<number>;
+  dogY$: BehaviorSubject<number>;
 
   ngOnInit() {
+    this.src$ = new BehaviorSubject<number>(0);
+    const mouse$ = fromEvent(document, 'mousemove');
 
+    // initialize dog position on first mouse move - this allows the image to render
+    mouse$.pipe(first()).subscribe((event: MouseEvent) => {
+
+      this.dogX$ = new BehaviorSubject<number>(event.clientX);
+      this.dogY$ = new BehaviorSubject<number>(event.clientY);
+    });
+
+    // filter consecutive events and attach last image id in sequence
     const mousemove$ =
-      fromEvent(document, 'mousemove').pipe(
+      mouse$.pipe(
         debounceTime(15),
-        tap(() => this.showDog = true),
         withLatestFrom(this.src$)
       );
 
     mousemove$.subscribe(([event, source]) => {
       const mouseEvent = event as MouseEvent;
-      this.dogX = mouseEvent.clientX;
-      this.dogY = mouseEvent.clientY;
+
+      // update coordinates
+      this.dogX$.next(mouseEvent.clientX);
+      this.dogY$.next(mouseEvent.clientY);
+
+      // update image sequence
       this.src$.next(source < 8 ? ++source : 1);
 
     });
