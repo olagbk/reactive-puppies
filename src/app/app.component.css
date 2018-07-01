@@ -1,6 +1,16 @@
-span {
+button, span {
   position: absolute;
+  background: rgba(0,0,0,0.5);
+  padding: 10px;
+  font-size: 22px;
+  font-family: sans-serif;
+  color: antiquewhite;
+}
+span {
   bottom: 0;
+}
+a {
+  color: antiquewhite;
 }
 img {
   position: absolute;

@@ -3,6 +3,8 @@
   [src]="'../assets/' + (src$ | async) + '.svg'"
   [ngStyle]="{'left': (dogX$ | async ) + 'px', 'top': (dogY$ | async ) + 'px'}">
 
+<button (click)="toggleMouse()">Mouse</button>
+
 <span>
   <a href="https://www.vexels.com/vectors/preview/71538/dog-motion-sequence-silhouettes">
     Dog motion sequence silhouettes

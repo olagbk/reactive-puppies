@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { BehaviorSubject, fromEvent } from 'rxjs';
+import {BehaviorSubject, fromEvent, Observable, Subscription} from 'rxjs';
 import { debounceTime, first,  withLatestFrom } from 'rxjs/internal/operators';
+import { MouseService } from './mouse.service';
 
 @Component({
   selector: 'app-root',
@@ -8,29 +9,37 @@ import { debounceTime, first,  withLatestFrom } from 'rxjs/internal/operators';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  src$: BehaviorSubject<number>;
+  src$ = new BehaviorSubject<number>(0);
   dogX$: BehaviorSubject<number>;
   dogY$: BehaviorSubject<number>;
+  mouseSubsciption: Subscription;
+
+  constructor(private mouse: MouseService) {}
 
   ngOnInit() {
-    this.src$ = new BehaviorSubject<number>(0);
-    const mouse$ = fromEvent(document, 'mousemove');
+    this.listenToFirstMove();
+    this.listen();
+  }
 
-    // initialize dog position on first mouse move - this allows the image to render
-    mouse$.pipe(first()).subscribe((event: MouseEvent) => {
+  toggleMouse() {
+    if (this.mouseSubsciption.closed) {
+      this.listen();
+    } else {
+
+      this.mouseSubsciption.unsubscribe();
+
+    }
+  }
+  private listenToFirstMove() {
+    this.mouse.first.subscribe((event: MouseEvent) => {
 
       this.dogX$ = new BehaviorSubject<number>(event.clientX);
       this.dogY$ = new BehaviorSubject<number>(event.clientY);
     });
+  }
 
-    // filter consecutive events and attach last image id in sequence
-    const mousemove$ =
-      mouse$.pipe(
-        debounceTime(15),
-        withLatestFrom(this.src$)
-      );
-
-    mousemove$.subscribe(([event, source]) => {
+  private listen() {
+    this.mouseSubsciption = this.mouse.updateWith(this.src$).subscribe(([event, source]) => {
       const mouseEvent = event as MouseEvent;
 
       // update coordinates
@@ -42,4 +51,5 @@ export class AppComponent implements OnInit {
 
     });
   }
+
 }
