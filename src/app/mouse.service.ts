@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { fromEvent, Observable } from 'rxjs';
+import { fromEvent, Observable, Subscription } from 'rxjs';
 import { debounceTime, first, withLatestFrom } from 'rxjs/internal/operators';
 
 @Injectable({
@@ -10,14 +10,14 @@ export class MouseService {
 
   constructor() { }
 
-  public updateWith($) {
-    return this.mouse$.pipe(
-        debounceTime(15),
-        withLatestFrom($)
-      );
-
+  public onFirstMove(callback): Subscription {
+    return this.mouse$.pipe(first()).subscribe(callback);
   }
-  get first() {
-    return this.mouse$.pipe(first());
+
+  public listenWith(ob$, callback): Subscription {
+    return this.mouse$.pipe(
+      debounceTime(15),
+      withLatestFrom(ob$))
+      .subscribe(callback);
   }
 }

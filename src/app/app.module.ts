@@ -3,10 +3,12 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { MouseService } from './mouse.service';
+import { DogComponent } from './dog/dog.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    DogComponent
   ],
   imports: [
     BrowserModule

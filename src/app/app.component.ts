@@ -1,7 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {BehaviorSubject, fromEvent, Observable, Subscription} from 'rxjs';
-import { debounceTime, first,  withLatestFrom } from 'rxjs/internal/operators';
-import { MouseService } from './mouse.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { DogComponent } from './dog/dog.component';
 
 @Component({
   selector: 'app-root',
@@ -9,47 +7,15 @@ import { MouseService } from './mouse.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  src$ = new BehaviorSubject<number>(0);
-  dogX$: BehaviorSubject<number>;
-  dogY$: BehaviorSubject<number>;
-  mouseSubsciption: Subscription;
+  @ViewChild(DogComponent) dog: DogComponent;
 
-  constructor(private mouse: MouseService) {}
+  constructor() {}
 
   ngOnInit() {
-    this.listenToFirstMove();
-    this.listen();
+    this.dog.followMouse();
   }
 
   toggleMouse() {
-    if (this.mouseSubsciption.closed) {
-      this.listen();
-    } else {
-
-      this.mouseSubsciption.unsubscribe();
-
-    }
+    this.dog.toggleMouse();
   }
-  private listenToFirstMove() {
-    this.mouse.first.subscribe((event: MouseEvent) => {
-
-      this.dogX$ = new BehaviorSubject<number>(event.clientX);
-      this.dogY$ = new BehaviorSubject<number>(event.clientY);
-    });
-  }
-
-  private listen() {
-    this.mouseSubsciption = this.mouse.updateWith(this.src$).subscribe(([event, source]) => {
-      const mouseEvent = event as MouseEvent;
-
-      // update coordinates
-      this.dogX$.next(mouseEvent.clientX);
-      this.dogY$.next(mouseEvent.clientY);
-
-      // update image sequence
-      this.src$.next(source < 8 ? ++source : 1);
-
-    });
-  }
-
 }

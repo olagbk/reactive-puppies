@@ -1,0 +1,4 @@
+<img
+  [hidden]="!( dogX$ && dogY$ | async )"
+  [src]="'../assets/' + (src$ | async) + '.svg'"
+  [ngStyle]="{'left': (dogX$ | async ) + 'px', 'top': (dogY$ | async ) + 'px'}">
