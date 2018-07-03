@@ -10,8 +10,8 @@ import { MouseService } from '../mouse.service';
 })
 export class DogComponent implements OnInit {
   src$ = new BehaviorSubject<number>(1);
-  dogX$: BehaviorSubject<number>;
-  dogY$: BehaviorSubject<number>;
+  x$: BehaviorSubject<number>;
+  y$: BehaviorSubject<number>;
   mouseSubscription: Subscription;
 
 
@@ -23,8 +23,8 @@ export class DogComponent implements OnInit {
     this.mouse.onFirstMove((event: MouseEvent) => {
 
       // initialize dog
-      this.dogX$ = new BehaviorSubject<number>(event.clientX);
-      this.dogY$ = new BehaviorSubject<number>(event.clientY);
+      this.x$ = new BehaviorSubject<number>(event.clientX);
+      this.y$ = new BehaviorSubject<number>(event.clientY);
     });
 
     this.listenToMouse();
@@ -42,8 +42,8 @@ export class DogComponent implements OnInit {
     this.mouseSubscription = this.mouse.listenWith(this.src$, ([event, source]) => {
       const mouseEvent = event as MouseEvent;
 
-      this.dogX$.next(mouseEvent.clientX);
-      this.dogY$.next(mouseEvent.clientY);
+      this.x$.next(mouseEvent.clientX);
+      this.y$.next(mouseEvent.clientY);
 
       // update image sequence
       this.src$.next(source < 8 ? ++source : 1);
