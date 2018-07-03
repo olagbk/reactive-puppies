@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { MouseService } from './mouse.service';
+import { MouseService } from './mouse/mouse.service';
 import { DogComponent } from './dog/dog.component';
 
 @NgModule({
