@@ -7,15 +7,9 @@ import { DogComponent } from './dog/dog.component';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  @ViewChild(DogComponent) dog: DogComponent;
-  @HostListener('click')
-  onClick() {
-    this.dog.toggleMouse();
-  }
+
 
   constructor() {}
 
-  ngOnInit() {
-    this.dog.followMouse();
-  }
+  ngOnInit() {}
 }

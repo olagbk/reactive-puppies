@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
 import { MouseService } from '../mouse/mouse.service';
@@ -15,12 +15,18 @@ export class DogComponent implements OnInit {
   y$: BehaviorSubject<number>;
   mouseSubscription: Subscription;
 
+  @HostListener('click')
+  onClick() {
+    this.toggleMouse();
+  }
 
-  constructor(private mouse: MouseService) {  }
+  constructor(private mouse: MouseService) { }
 
-  ngOnInit() {  }
+  ngOnInit() {
+    this.followMouse();
+  }
 
-  followMouse() {
+  private followMouse() {
     this.mouse.onFirstMove((event: MouseEvent) => {
 
       // initialize dog
@@ -31,7 +37,7 @@ export class DogComponent implements OnInit {
     this.listenToMouse();
   }
 
-  toggleMouse() {
+  private toggleMouse() {
     if (this.mouseSubscription.closed) {
       this.listenToMouse();
     } else {
@@ -39,7 +45,7 @@ export class DogComponent implements OnInit {
     }
   }
 
-  listenToMouse() {
+  private listenToMouse() {
     this.mouseSubscription = this.mouse.listenWith(this.src$, ([event, source]) => {
       const mouseEvent = event as MouseEvent;
 
