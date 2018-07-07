@@ -16,10 +16,14 @@ With animation sequence:
   styleUrls: ['./custom.component.css']
 })
 export class CustomComponent {
-  sequencePath = '../assets/sequence';
+  sequence = ['../assets/sequence/1.svg',
+              '../assets/sequence/2.svg',
+              '../assets/sequence/3.svg',
+              // etc.
+              ]
 }
 
-<custom-component [ngControlsFollow]="sequencePath"></custom-component>
+<custom-component [ngControlsFollow]="sequence"></custom-component>
 
 --app
 ---custom.component.ts
