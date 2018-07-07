@@ -1,10 +1,10 @@
 import { Directive, ElementRef, HostListener, OnInit, Renderer2, Self } from '@angular/core';
 import { MouseService } from './mouse/mouse.service';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { AnimalComponent } from './animal/animal.component';
+import { AnimalComponent } from '../animal/animal.component';
 
 @Directive({
-  selector: '[appFollow]'
+  selector: '[ngControlsFollow]'
 })
 export class FollowDirective implements OnInit {
   readonly size = 75;

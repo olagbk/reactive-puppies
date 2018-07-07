@@ -1,21 +1,20 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { ReactiveControlsModule } from './reactive-controls/reactive-controls.module';
 
 import { AppComponent } from './app.component';
-import { MouseService } from './mouse/mouse.service';
 import { AnimalComponent } from './animal/animal.component';
-import { FollowDirective } from './follow.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
-    AnimalComponent,
-    FollowDirective
+    AnimalComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    ReactiveControlsModule
   ],
-  providers: [MouseService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

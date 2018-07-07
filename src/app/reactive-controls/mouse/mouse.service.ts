@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { fromEvent, Observable, Subscription } from 'rxjs';
-import { debounceTime, first, withLatestFrom } from 'rxjs/internal/operators';
+import { debounceTime, first } from 'rxjs/internal/operators';
 
 @Injectable({
   providedIn: 'root'
