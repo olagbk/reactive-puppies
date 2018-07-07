@@ -1,9 +1,9 @@
-/deep/ img {
+img {
   position: absolute;
   height: 75px;
   width: 75px;
 }
-/deep/ img:hover {
+img:hover {
   background: rgba(255, 255, 255, 0.2);
   cursor: pointer;
   box-shadow: rgba(0, 0, 0, .3) 2px 2px 2px;

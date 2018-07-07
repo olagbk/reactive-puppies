@@ -14,10 +14,9 @@ export class MouseService {
     return this.mouse$.pipe(first()).subscribe(callback);
   }
 
-  public listenWith(ob$, callback): Subscription {
+  public listen(callback): Subscription {
     return this.mouse$.pipe(
-      debounceTime(15),
-      withLatestFrom(ob$))
+      debounceTime(15))
       .subscribe(callback);
   }
 }
