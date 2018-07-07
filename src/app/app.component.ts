@@ -7,5 +7,7 @@ import { Animal } from './animal/animal';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  readonly assetsPath = '../../assets/';
   animals: Animal[] = ['dog', 'horse'];
+
 }

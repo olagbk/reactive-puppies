@@ -1,17 +1,17 @@
-import { Directive, ElementRef, HostListener, OnInit, Renderer2, Self } from '@angular/core';
-import { MouseService } from './mouse/mouse.service';
+import { Directive, ElementRef, HostListener, Input, OnInit, Renderer2 } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { AnimalComponent } from '../animal/animal.component';
+
+import { MouseService } from './mouse/mouse.service';
 
 @Directive({
   selector: '[ngControlsFollow]'
 })
 export class FollowDirective implements OnInit {
-  readonly size = 75;
   src$: BehaviorSubject<number>;
   position$: BehaviorSubject<number[]>;
   mouseSubscription: Subscription;
-  private source: AnimalComponent;
+
+  @Input('ngControlsFollow') source: string;
 
   @HostListener('click')
   private toggleMouse() {
@@ -20,12 +20,9 @@ export class FollowDirective implements OnInit {
     : this.mouseSubscription.unsubscribe();
   }
 
-  constructor(@Self() component: AnimalComponent,
-              private el: ElementRef,
+  constructor(private el: ElementRef,
               private renderer: Renderer2,
-              private mouse: MouseService) {
-    this.source = component;
-  }
+              private mouse: MouseService) { }
 
   ngOnInit() {
     this.followMouse();
@@ -48,21 +45,26 @@ export class FollowDirective implements OnInit {
 
   private updateImage(x: number, y: number) {
     const imgNumber = this.src$.getValue();
-    const imgElement = this.el.nativeElement.firstChild;
+    const imgElement = this.el.nativeElement;
 
-    this.renderer.setAttribute(imgElement, 'src', `../assets/${this.source.type}/${imgNumber}.svg`);
+
     this.renderer.setStyle(imgElement, 'left', `${x}px`);
     this.renderer.setStyle(imgElement, 'top', `${y}px`);
 
-    this.src$.next(imgNumber < 8 ? imgNumber + 1 : 1);
+    if (this.source) {
+      // animate background image sequence
+      this.renderer.setStyle(imgElement, 'backgroundImage', `url('${this.source}/${imgNumber}.svg')`);
+      this.src$.next(imgNumber < 8 ? imgNumber + 1 : 1);
+    }
+
   }
 
 
   private listenToMouse() {
     this.mouseSubscription = this.mouse.listen((event) => {
       const mouseEvent = event as MouseEvent;
-      const x = mouseEvent.clientX - .5 * this.size;
-      const y = mouseEvent.clientY - .5 * this.size;
+      const x = mouseEvent.clientX - .5 * this.el.nativeElement.clientWidth;
+      const y = mouseEvent.clientY - .5 * this.el.nativeElement.clientHeight;
 
       this.position$.next([x, y]);
 
