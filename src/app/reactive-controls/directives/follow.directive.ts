@@ -1,7 +1,7 @@
 import { Directive, ElementRef, HostListener, Input, OnInit, Renderer2 } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
-import { MouseService } from './mouse/mouse.service';
+import { MouseService } from '../services/mouse/mouse.service';
 
 @Directive({
   selector: '[ngControlsFollow]'
@@ -11,7 +11,7 @@ export class FollowDirective implements OnInit {
   position$: BehaviorSubject<number[]>;
   mouseSubscription: Subscription;
 
-  @Input('ngControlsFollow') source: string;
+  @Input('ngControlsFollow') source: string[];
 
   @HostListener('click')
   private toggleMouse() {
@@ -51,9 +51,9 @@ export class FollowDirective implements OnInit {
     this.renderer.setStyle(imgElement, 'left', `${x}px`);
     this.renderer.setStyle(imgElement, 'top', `${y}px`);
 
-    if (this.source) {
+    if (this.source.length) {
       // animate background image sequence
-      this.renderer.setStyle(imgElement, 'backgroundImage', `url('${this.source}/${imgNumber}.svg')`);
+      this.renderer.setStyle(imgElement, 'backgroundImage', this.source[imgNumber]);
       this.src$.next(imgNumber < 8 ? imgNumber + 1 : 1);
     }
 

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FollowDirective } from './follow.directive';
-import { MouseService } from './mouse/mouse.service';
+import { FollowDirective } from './directives/follow.directive';
+import { MouseService } from './services/mouse/mouse.service';
 
 @NgModule({
   imports: [

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Animal } from './animal/animal';
+import { Dog, Horse } from './animal/animal';
 
 @Component({
   selector: 'app-root',
@@ -7,7 +7,6 @@ import { Animal } from './animal/animal';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  readonly assetsPath = '../../assets/';
-  animals: Animal[] = ['dog', 'horse'];
-
+  dog = new Dog();
+  horse = new Horse();
 }
